@@ -6,6 +6,7 @@ export const routes = {
   StackScreen:"StackScreen",
   AuthenticationProvider:"AuthenticationProvider",
   ApplicationProvider:"ApplicationProvider",
+  FavoriteProducts:"FavoriteProducts",
   
 
 };
