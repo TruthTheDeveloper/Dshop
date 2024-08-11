@@ -1,65 +1,78 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Hscreen } from "../../containers";
 import { Hheader } from "../../presenters";
 import { NavigatorScreenProps } from "../../routers/navigation/types";
 import { RouteProp } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Button, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import styles from "./style";
 
-interface Props {
-    navigation: NavigatorScreenProps;
-    route: RouteProp<{ ProductDetailsScreen: { product: any } }, 'ProductDetailsScreen'>;
+interface Product {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  thumbnail: string;
 }
 
-const ProductDetailsScreen = ({ route, navigation }: Props) => {
-    const product = route.params?.product;
-    const [isFavorite, setIsFavorite] = useState(false);
+interface Props {
+  navigation: NavigatorScreenProps;
+  route: RouteProp<{ ProductDetailsScreen: { product: Product } }, 'ProductDetailsScreen'>;
+}
 
-    useEffect(() => {
-        checkFavoriteStatus();
-      }, []);
-    
-      const checkFavoriteStatus = async () => {
-        const favorites = await AsyncStorage.getItem('favoriteProducts');
-        if (favorites) {
-          const favoritesArray = JSON.parse(favorites);
-          setIsFavorite(favoritesArray.some((p: any) => p.id === product.id));
-        }
-      };
+const ProductDetailsScreen: React.FC<Props> = ({ route, navigation }) => {
+  const product = useMemo(() => route.params?.product, [route.params?.product]);
+  const [isFavorite, setIsFavorite] = useState(false);
 
-      const toggleFavorite = async () => {
-        const favorites = await AsyncStorage.getItem('favoriteProducts');
-        let favoritesArray = favorites ? JSON.parse(favorites) : [];
-        
-        if (isFavorite) {
-          favoritesArray = favoritesArray.filter((p: any) => p.id !== product.id);
-        } else {
-          favoritesArray.push(product);
-        }
-        
-        await AsyncStorage.setItem('favoriteProducts', JSON.stringify(favoritesArray));
-        setIsFavorite(!isFavorite);
-      };
-
-
-      if (!product) {
-        return (
-          <Hscreen>
-            <Hheader
-              text="Product Not Found"
-              onPressLeftAction={() => navigation.navigation.goBack()}
-            />
-            <View>
-              <Text>Sorry, the product details are not available.</Text>
-            </View>
-          </Hscreen>
-        );
+  const checkFavoriteStatus = useCallback(async () => {
+    try {
+      const favorites = await AsyncStorage.getItem('favoriteProducts');
+      if (favorites && product) {
+        const favoritesArray: Product[] = JSON.parse(favorites);
+        setIsFavorite(favoritesArray.some(p => p.id === product.id));
       }
-    
+    } catch (error) {
+      console.error('Error checking favorite status:', error);
+    }
+  }, [product]);
 
+  useEffect(() => {
+    checkFavoriteStatus();
+  }, [checkFavoriteStatus]);
+
+  const toggleFavorite = useCallback(async () => {
+    try {
+      const favorites = await AsyncStorage.getItem('favoriteProducts');
+      let favoritesArray: Product[] = favorites ? JSON.parse(favorites) : [];
+
+      if (isFavorite) {
+        favoritesArray = favoritesArray.filter(p => p.id !== product?.id);
+      } else if (product) {
+        favoritesArray.push(product);
+      }
+
+      await AsyncStorage.setItem('favoriteProducts', JSON.stringify(favoritesArray));
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
+  }, [isFavorite, product]);
+
+  if (!product) {
     return (
-        <ScrollView style={styles.container}>
+      <Hscreen>
+        <Hheader
+          text="Product Not Found"
+        />
+        <View>
+          <Text>Sorry, the product details are not available.</Text>
+        </View>
+      </Hscreen>
+    );
+  }
+
+  return (
+    <ScrollView style={styles.container}>
       <Image source={{ uri: product.thumbnail }} style={styles.productImage} />
       <View style={styles.infoContainer}>
         <Text style={styles.title}>{product.title}</Text>
@@ -75,7 +88,7 @@ const ProductDetailsScreen = ({ route, navigation }: Props) => {
         </TouchableOpacity>
       </View>
     </ScrollView>
-    );
-  };
-  
-  export default ProductDetailsScreen;
+  );
+};
+
+export default React.memo(ProductDetailsScreen);

@@ -1,36 +1,39 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { NavigatorScreenProps } from "../../routers/navigation/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import styles from "./styles";
 import { routes } from "../../routers/router-constants/routes";
 
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  thumbnail: string;
+}
 
-const FavouriteProductsScreen = ({ navigation }:NavigatorScreenProps) => {
-    const [favoriteProducts, setFavoriteProducts] = useState([]);
+const FavouriteProductsScreen: React.FC<NavigatorScreenProps> = ({ navigation }) => {
+  const [favoriteProducts, setFavoriteProducts] = useState<Product[]>([]);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      loadFavoriteProducts();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
-  const loadFavoriteProducts = async () => {
+  const loadFavoriteProducts = useCallback(async () => {
     try {
       const favoritesJson = await AsyncStorage.getItem('favoriteProducts');
       if (favoritesJson) {
-        const parsedFavorites = JSON.parse(favoritesJson);
+        const parsedFavorites: Product[] = JSON.parse(favoritesJson);
         setFavoriteProducts(parsedFavorites);
       }
     } catch (error) {
       console.error('Failed to load favorite products:', error);
       Alert.alert('Error', 'Failed to load favorite products');
     }
-  };
+  }, []);
 
-  const renderProduct = ({ item }: { item: any }) => (
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', loadFavoriteProducts);
+    return unsubscribe;
+  }, [navigation, loadFavoriteProducts]);
+
+  const renderProduct = useCallback(({ item }: { item: Product }) => (
     <TouchableOpacity 
       style={styles.productItem}
       onPress={() => navigation.navigate(routes.ProductDetailsScreen, { product: item })}
@@ -41,7 +44,9 @@ const FavouriteProductsScreen = ({ navigation }:NavigatorScreenProps) => {
         <Text style={styles.productPrice}>${item.price}</Text>
       </View>
     </TouchableOpacity>
-  );
+  ), [navigation]);
+
+  const keyExtractor = useCallback((item: Product) => item.id.toString(), []);
 
   return (
     <View style={styles.container}>
@@ -49,13 +54,13 @@ const FavouriteProductsScreen = ({ navigation }:NavigatorScreenProps) => {
         <FlatList
           data={favoriteProducts}
           renderItem={renderProduct}
-          keyExtractor={(item) => item.id ? item.id.toString() : Math.random().toString()}
+          keyExtractor={keyExtractor}
         />
       ) : (
         <Text style={styles.noFavoritesText}>No favorite products added yet.</Text>
       )}
     </View>
   );
-}
+};
 
-export default FavouriteProductsScreen;
+export default React.memo(FavouriteProductsScreen);

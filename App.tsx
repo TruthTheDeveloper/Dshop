@@ -9,6 +9,10 @@ import Toast from 'react-native-toast-message';
 
 import SplashScreen from 'react-native-splash-screen';
 import { ToastProvider } from './src/presenters/h-toast';
+import { clearAsyncStorage } from './src/helpers/clearAsyncStorage';
+
+
+
 
 
 const App = () => {
@@ -19,6 +23,10 @@ const App = () => {
     SplashScreen.hide();
   }, []);
 
+  
+  
+  // Call the function to clear the storage
+  clearAsyncStorage();
 
   return (
     <SafeAreaView
@@ -36,3 +44,4 @@ const App = () => {
 };
 
 export default App;
+
