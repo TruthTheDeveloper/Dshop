@@ -47,6 +47,18 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
       },
+
+      logoutButton: {
+        backgroundColor: colors.lightText,
+        padding: 15,
+        borderRadius: 5,
+        alignItems: 'center',
+      },
+      logoutButtonText: {
+        color: colors.white,
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
   });
 
   

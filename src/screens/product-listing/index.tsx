@@ -3,6 +3,7 @@ import { ScrollView, View, TouchableOpacity, StyleSheet, Alert, Image, Text, Fla
 import { NavigatorScreenProps } from '../../routers/navigation/types';
 import { routes } from '../../routers/router-constants/routes';
 import styles from './style';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProductListingScreen = ({navigation}: NavigatorScreenProps) => {
 
@@ -49,6 +50,18 @@ const ProductListingScreen = ({navigation}: NavigatorScreenProps) => {
     setLoading(false);
   };
 
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('isLoggedIn');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: routes.LoginScreen}],
+      });
+    } catch (error) {
+      Alert.alert('Error', 'Logout failed. Please try again.');
+    }
+  };
+
   const renderProduct = ({ item }: { item: Product }) => (
     <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate(routes.ProductDetailsScreen, { product: item })}>
       <View style={styles.productInfo}>
@@ -79,6 +92,9 @@ const ProductListingScreen = ({navigation}: NavigatorScreenProps) => {
         onEndReachedThreshold={0.1}
         ListFooterComponent={loading ? <ActivityIndicator size="large" /> : null}
       />
+       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.logoutButtonText}>Logout</Text>
+        </TouchableOpacity>
     </View>
     
   );
