@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# Dshop
-A shop app for listing and view product from Dummy Json public API
-=======
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
@@ -81,4 +77,79 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
->>>>>>> dee51ad (Initial commit)
+
+
+
+# Dshop App
+
+This React Native application allows users to browse products, view product details, add products to favorites, and manage their favorite products list.
+
+
+## Features
+
+1. User Authentication
+   - Login
+   - Registration
+   - Logout
+2. Product Listing
+   - Infinite scrolling product list
+   - Product details view
+3. Favorites Management
+   - Add/Remove products from favorites
+   - View favorite products list
+4.Product Details
+   - View product details
+   - Add/Remove products from favorites
+   - View favorite products list
+
+
+
+## Screens
+
+Login Screen
+
+Allows users to log in with their username and password
+Validates credentials against stored user data
+Navigates to Product Listing Screen on successful login
+
+Registration Screen
+Allows new users to create an account
+Stores user data in AsyncStorage
+Navigates to Login Screen after successful registration
+
+Product Listing Screen
+Displays a list of products with infinite scrolling
+Each product shows an image, title, and price
+Allows navigation to Product Details Screen
+Includes a "View Favorites" button and a Logout button
+
+Product Details Screen
+Shows detailed information about a selected product
+Allows users to add/remove the product from favorites
+Includes a "Add to Favorites" button and a "Remove from Favorites" button
+
+Favorite Products Screen
+Displays a list of favorite products
+Allows navigation to Product Details Screen
+Includes a "Logout" button
+
+
+## State Management
+
+- The app uses local state management with React's useState hook
+
+- AsyncStorage is used for persisting user data and favorite products
+
+
+## Styling
+- Styles are defined in separate style files for each component
+Global styles are used for consistent theming across the app
+
+
+## Future Improvements
+Implement proper state management (e.g., Redux) for better data flow
+Add error handling and loading states for API calls
+Implement user profile management
+Add search functionality to the product listing
+Implement product categories and filtering
+This README provides an overview of the app's structure and functionality. For more detailed information, refer to the individual component files and their comments.
