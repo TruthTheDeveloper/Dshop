@@ -24,4 +24,6 @@ export type HinputTypes = {
   keyboardType?: KeyboardType;
   autoFocus?: boolean;
   getIsFocused?: (focused: boolean | null) => void;
+  styles?: ViewStyle;
+  secureTextEntry?: boolean;
 };

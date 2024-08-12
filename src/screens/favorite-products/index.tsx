@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { NavigatorScreenProps } from "../../routers/navigation/types";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Alert, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import styles from "./styles";
-import { routes } from "../../routers/router-constants/routes";
+import React, { useState, useCallback, useEffect } from 'react';
+import { View, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { NavigatorScreenProps } from '../../routers/navigation/types';
+import styles from './styles';
+import { routes } from '../../routers/router-constants/routes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppText, AppImage } from '../../reusables';
 
 interface Product {
   id: number;
@@ -38,10 +39,10 @@ const FavouriteProductsScreen: React.FC<NavigatorScreenProps> = ({ navigation })
       style={styles.productItem}
       onPress={() => navigation.navigate(routes.ProductDetailsScreen, { product: item })}
     >
-      <Image source={{ uri: item.thumbnail }} style={styles.productImage} />
+      <AppImage uri={item.thumbnail} extraStyles={styles.productImage} />
       <View style={styles.productInfo}>
-        <Text style={styles.productTitle}>{item.title}</Text>
-        <Text style={styles.productPrice}>${item.price}</Text>
+        <AppText text={item.title} styles={styles.productTitle} fontSize={14} />
+        <AppText text={`$${item.price}`} styles={styles.productPrice} fontSize={14} />
       </View>
     </TouchableOpacity>
   ), [navigation]);
@@ -57,10 +58,10 @@ const FavouriteProductsScreen: React.FC<NavigatorScreenProps> = ({ navigation })
           keyExtractor={keyExtractor}
         />
       ) : (
-        <Text style={styles.noFavoritesText}>No favorite products added yet.</Text>
+        <AppText text="No favorite products added yet." styles={styles.noFavoritesText} fontSize={16} />
       )}
     </View>
   );
 };
 
-export default React.memo(FavouriteProductsScreen);
+export default FavouriteProductsScreen;

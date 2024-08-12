@@ -1,13 +1,13 @@
-// RegisterScreen.js
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View } from 'react-native';
 import { NavigatorScreenProps } from '../../routers/navigation/types';
 import styles from './style';
 import { routes } from '../../routers/router-constants/routes';
 import useAuth from '../../hooks/useAuth';
+import { AppButton, AppText, AppInput } from '../../reusables';
+import { colors } from '../../global-styles/styles';
 
-function Register({ navigation }:NavigatorScreenProps) {
+const Register: React.FC<NavigatorScreenProps> = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -16,40 +16,14 @@ function Register({ navigation }:NavigatorScreenProps) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Register</Text>
-      </TouchableOpacity>
-      <TouchableOpacity 
-        style={styles.loginButton} 
-        onPress={() => navigation.navigate(routes.LoginScreen)}
-      >
-        <Text style={styles.loginButtonText}>Already have an account? Login</Text>
-      </TouchableOpacity>
+      <AppText text="Register" styles={styles.title} fontSize={20} />
+      <AppInput value={username} onChangeText={setUsername} placeholder="Username" styles={styles.input} />
+      <AppInput value={email} onChangeText={setEmail} placeholder="Email" styles={styles.input} keyboardType="email-address" />
+      <AppInput value={password} onChangeText={setPassword} placeholder="Password" styles={styles.input} secureTextEntry />
+      <AppButton style={styles.button} text="Register" fontSize={18} textColor={colors.white} onPress={handleRegister} textStyle={styles.buttonText} />
+      <AppButton style={styles.loginButton} text="Already have an account? Login" textColor={colors.primary} fontSize={16} onPress={() => navigation.navigate(routes.LoginScreen)} />
     </View>
   );
-}
-
-
+};
 
 export default Register;

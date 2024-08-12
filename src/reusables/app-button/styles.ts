@@ -16,7 +16,7 @@ export const styles = (
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 5,
-      backgroundColor: 'darkgreen',
+      // backgroundColor: 'darkgreen',
       opacity: disabled ? 0.5 : 1,
       alignSelf: isCentered ? 'center' : 'flex-start',
       borderWidth: type == 'normal' ? 0 : 1,

@@ -1,5 +1,5 @@
 import {ReactNode} from 'react';
-import {ViewStyle} from 'react-native/types';
+import {TextStyle, ViewStyle} from 'react-native/types';
 
 export type AppButtonTypes = {
   isCentered?: boolean;
@@ -10,7 +10,8 @@ export type AppButtonTypes = {
   text?: string;
   type?: buttonTypes;
   textColor?:string;
-
+  fontSize?: number;
+  textStyle?: TextStyle | Array<TextStyle>;
 };
 
 export type buttonTypes = 'outlined' | 'normal';

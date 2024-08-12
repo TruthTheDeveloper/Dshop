@@ -5,41 +5,31 @@ import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { routes } from "../../routers/router-constants/routes";
 import useAuth from "../../hooks/useAuth";
-const Login = ({navigation}: NavigatorScreenProps) => {
+import { AppButton, AppText } from "../../reusables";
+import { Hinput } from "../../presenters";
+import { colors } from "../../global-styles/styles";
+import AppInput from "../../reusables/app-input";
+const Login = ({ navigation }: NavigatorScreenProps) => {
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-  
-    const { handleLogin } = useAuth(username, password, "", navigation);
-  
-  
-    return (
-        <View style={styles.container}>
-        <Text style={styles.title}>Login</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Username"
-          value={username}
-          onChangeText={setUsername}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={styles.registerButton} 
-          onPress={() => navigation.navigate(routes.RegistrationScreen)}
-        >
-          <Text style={styles.registerButtonText}>Don't have an account? Register</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-  
-  export default Login;
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const { handleLogin } = useAuth(username, password, "", navigation);
+
+
+  return (
+    <View style={styles.container}>
+      <AppText text="Login" styles={styles.title} fontSize={20} />
+      <AppInput value={username} onChangeText={setUsername} placeholder={"Username"} styles={styles.input} />
+      <AppInput value={password} onChangeText={setPassword} placeholder={"Password"} styles={styles.input} secureTextEntry />
+      <AppButton style={styles.button} text="Login" fontSize={18} textColor={colors.white} onPress={handleLogin} textStyle={styles.buttonText}/>
+      <AppButton style={styles.registerButton} text="Don't have an account? Register" textColor={colors.primary}  fontSize={16} onPress={() => navigation.navigate(routes.RegistrationScreen)} />
+
+
+    </View>
+
+
+  );
+};
+
+export default Login;

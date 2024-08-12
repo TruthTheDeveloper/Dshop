@@ -5,6 +5,7 @@ import { routes } from '../../routers/router-constants/routes';
 import styles from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useAuth from '../../hooks/useAuth';
+import { AppButton, AppImage, AppText } from '../../reusables';
 
 const ProductListingScreen = ({ navigation }: NavigatorScreenProps) => {
 
@@ -60,9 +61,9 @@ const ProductListingScreen = ({ navigation }: NavigatorScreenProps) => {
     const renderProduct = ({ item }: { item: Product }) => (
         <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate(routes.ProductDetailsScreen, { product: item })}>
             <View style={styles.productInfo}>
-                <Image source={{ uri: item.thumbnail }} style={{ width: 100, height: 100 }} />
-                <Text style={styles.productTitle}>{item.title}</Text>
-                <Text style={styles.productPrice}>{item.price}</Text>
+                <AppImage uri={item.thumbnail} extraStyles={{ width: 100, height: 100 }} />
+                <AppText text={item.title} styles={styles.productTitle} fontSize={14} />
+                <AppText text={`${item.price}`} styles={styles.productPrice} fontSize={14} />
             </View>
         </TouchableOpacity>
     );
@@ -71,12 +72,13 @@ const ProductListingScreen = ({ navigation }: NavigatorScreenProps) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity
+            <AppButton
                 style={styles.favoriteListButton}
+                text="View Favorites"
+                textColor={styles.favoriteListButtonText.color}
+                fontSize={14}
                 onPress={() => navigation.navigate('FavoriteProducts')}
-            >
-                <Text style={styles.favoriteListButtonText}>View Favorites</Text>
-            </TouchableOpacity>
+            />
 
 
             <FlatList
@@ -87,9 +89,13 @@ const ProductListingScreen = ({ navigation }: NavigatorScreenProps) => {
                 onEndReachedThreshold={0.1}
                 ListFooterComponent={loading ? <ActivityIndicator size="large" /> : null}
             />
-            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                <Text style={styles.logoutButtonText}>Logout</Text>
-            </TouchableOpacity>
+            <AppButton
+                style={styles.logoutButton}
+                text="Logout"
+                textColor={styles.logoutButtonText.color}
+                fontSize={14}
+                onPress={handleLogout}
+            />
         </View>
 
     );

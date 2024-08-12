@@ -16,6 +16,8 @@ const Hinput: FunctionComponent<HinputTypes> = ({
   getIsFocused = focused => focused,
   isJustInput = false,
   keyboardType = 'default',
+  styles,
+  secureTextEntry = false,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const colors = pallete;
@@ -45,7 +47,8 @@ const Hinput: FunctionComponent<HinputTypes> = ({
         editable={editable}
         autoFocus={autoFocus}
         placeholder={placeHolder}
-        style={HinputStyles(colors).input}
+        style={styles}
+        secureTextEntry={secureTextEntry}
       />
     </View>
   );

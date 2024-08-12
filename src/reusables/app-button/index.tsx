@@ -13,6 +13,8 @@ const AppButton = ({
   type = 'normal',
   text,
   textColor,
+  fontSize,
+  textStyle,
 }: AppButtonTypes) => {
   const Container = ({children}: {children: ReactNode}) => {
     return disabled ? (
@@ -32,7 +34,7 @@ const AppButton = ({
             styles(type, pallete, isCentered, disabled).container,
             style,
           ]}>
-          <AppText text={text} color={textColor} />
+          <AppText text={text} color={textColor} fontSize={fontSize} styles={textStyle} />
         </TouchableOpacity>
       </>
     </Container>

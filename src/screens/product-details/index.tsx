@@ -6,6 +6,8 @@ import { RouteProp } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import styles from "./style";
+import { AppText } from "../../reusables";
+import { colors } from "../../global-styles/styles";
 
 interface Product {
   id: number;
@@ -61,11 +63,9 @@ const ProductDetailsScreen: React.FC<Props> = ({ route, navigation }) => {
   if (!product) {
     return (
       <Hscreen>
-        <Hheader
-          text="Product Not Found"
-        />
+        <Hheader text="Product Not Found" />
         <View>
-          <Text>Sorry, the product details are not available.</Text>
+          <AppText text="Sorry, the product details are not available."  fontSize={16} />
         </View>
       </Hscreen>
     );
@@ -75,16 +75,14 @@ const ProductDetailsScreen: React.FC<Props> = ({ route, navigation }) => {
     <ScrollView style={styles.container}>
       <Image source={{ uri: product.thumbnail }} style={styles.productImage} />
       <View style={styles.infoContainer}>
-        <Text style={styles.title}>{product.title}</Text>
-        <Text style={styles.price}>${product.price}</Text>
-        <Text style={styles.description}>{product.description}</Text>
+        <AppText text={product.title} styles={styles.title} fontSize={20} />
+        <AppText text={`${product.price}`} styles={styles.price} fontSize={16} />
+        <AppText text={product.description} styles={styles.description} fontSize={14} />
         <TouchableOpacity
           style={[styles.favoriteButton, isFavorite && styles.favoriteButtonActive]}
           onPress={toggleFavorite}
         >
-          <Text style={styles.favoriteButtonText}>
-            {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-          </Text>
+          <AppText text={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'} styles={styles.favoriteButtonText} fontSize={14} color={colors.white}/>
         </TouchableOpacity>
       </View>
     </ScrollView>
